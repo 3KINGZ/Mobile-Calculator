@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StatusBar, StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 
 import { CalcButton, Button } from "./src/component";
@@ -16,57 +16,65 @@ const App = () => {
   ] = useCalc();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.calcContainer}>
-        <Text style={styles.calcText}>{filterCalc(calc)}</Text>
-      </View>
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <View style={styles.container}>
+        <View style={styles.calcContainer}>
+          <Text style={styles.calcText}>{filterCalc(calc)}</Text>
+        </View>
 
-      <View style={styles.resultContainer}>
-        <Text style={styles.resultText}>{result}</Text>
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>{result}</Text>
+        </View>
+        <FlatList
+          data={calcBTNS}
+          numColumns={4}
+          style={{ flex: 1 }}
+          renderItem={({ item }) => (
+            <CalcButton
+              onPress={() => calcFUNCS[item.type](item.value)}
+              value={item.emit}
+            />
+          )}
+        />
+        <Button
+          onPress={calcFUNCS.sum}
+          title="="
+          size="md"
+          style={{
+            containerStyle: {
+              alignSelf: "center",
+              borderRadius: 0,
+              height: "10%",
+            },
+            textStyle: {
+              fontSize: scale(30),
+            },
+          }}
+        />
       </View>
-      <FlatList
-        data={calcBTNS}
-        numColumns={4}
-        style={{ flex: 1 }}
-        renderItem={({ item }) => (
-          <CalcButton
-            onPress={() => calcFUNCS[item.type](item.value)}
-            value={item.emit}
-          />
-        )}
-      />
-      <Button
-        onPress={calcFUNCS.sum}
-        title="="
-        size="md"
-        style={{
-          containerStyle: {
-            alignSelf: "center",
-            borderRadius: 0,
-          },
-          textStyle: {
-            fontSize: scale(30),
-          },
-        }}
-      />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
   calcContainer: {
-    padding: "6%",
+    height: "10%",
+    justifyContent: "center",
     borderBottomWidth: 1,
     borderColor: COLORS.lightGrey,
   },
   calcText: {
     textAlign: "right",
     color: COLORS.primary,
-    fontSize: scale(16),
+    fontSize: scale(18),
+    marginRight: 5,
   },
   resultContainer: {
-    padding: "5%",
+    // padding: "5%",
+    height: "10%",
+    justifyContent: "center",
     borderBottomWidth: 1,
     borderColor: COLORS.lightGrey,
   },
@@ -74,6 +82,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     color: COLORS.primary,
     fontSize: scale(24),
+    marginRight: 5,
   },
 });
 
